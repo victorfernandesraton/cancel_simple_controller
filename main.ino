@@ -4,15 +4,15 @@
 // constantes
 // -------- servo ------------------
 Servo sv;
-const int servoPin = 3;
+const int servoPin = 3; // motor que controla o braço da cancela
 // -------- leds -------------------
 const int greenLedPin = 8; // led verde
 const int redledPin = 4;   // led vermelha
 // -------- sensor proximidade -----
-const int sensorPinEntrada = 10;
-const int sensorPinsSaida = 12;
+const int sensorPinEntrada = 10;    // sensor que detect veículos próximos á entrada
+const int sensorPinsSaida = 12; // sensor que detecta se o veículo está a uma distância segura para fechar a cancela
 // -------- pieso ------------------
-const int piesoPin = 11;
+const int piesoPin = 11;    // alerta sonoro
 
 // piscar led
 void changeLed(int ledPin)
@@ -74,7 +74,7 @@ float getSensorProximity(int sensorPinEntrada)
     delayMicroseconds(5);
     digitalWrite(sensorPinEntrada, LOW);
     pinMode(sensorPinEntrada, INPUT);
-    return 0.01523 * pulseIn(sensorPinEntrada, HIGH);
+    return 0.01723 * pulseIn(sensorPinEntrada, HIGH);
 }
 
 // emite som com o pieso
@@ -122,14 +122,14 @@ void loop()
         // abertura de cancela
         openCancel();
     }
-    // canxela erguida mas o carro está longe dae perpassar as cancelas
+    // cancela erguida mas o carro está longe dae perpassar as cancelas
     else if (sensorSaidaDistance >= 50 && cancelPosition >= 90)
     {
         noTone(piesoPin);
         digitalWrite(redledPin, LOW);
         digitalWrite(greenLedPin, HIGH);
     }
-    // cancela aberta
+    // cancela aberta irá fechar pois o carro se aproximou de um segundo sensor o qual está a uma distâmcia segura da cancela
     else if (sensorEntradaDistance >= 100 && sensorSaidaDistance < 50 && cancelPosition >= 90)
     {
         // desliga led
@@ -142,9 +142,12 @@ void loop()
     // cancela fechada sem veiculo proximo
     else if (cancelPosition == 0)
     {
+        // silencia o piezo
         noTone(piesoPin);
+        // liga led
         digitalWrite(redledPin, HIGH);
+        // desliga led
         digitalWrite(greenLedPin, LOW);
     }
-    delay(200);
+    delay(100);
 }
