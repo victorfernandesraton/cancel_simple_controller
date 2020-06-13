@@ -8,11 +8,11 @@ const int servoPin = 3; // motor que controla o braço da cancela
 // -------- leds -------------------
 const int redledPin = 9;   // led vermelha
 const int greenLedPin = 10; // led verde
-// -------- pieso ------------------
-const int piesoPin = 8;    // alerta sonoro
 // -------- sensor proximidade -----
 const int sensorPinEntrada = 2;    // sensor que detect veículos próximos á entrada
 const int sensorPinsSaida = 4; // sensor que detecta se o veículo está a uma distância segura para fechar a cancela
+// -------- pieso ------------------
+const int piesoPin = 8;    // alerta sonoro
 
 // piscar led
 void changeLed(int ledPin)
@@ -91,7 +91,7 @@ void setup()
 {
     Serial.begin(9600);
 
-    sv.attach(3);                 // porta do sianl servo motor
+    sv.attach(servoPin);                 // porta do sianl servo motor
     sv.write(0);                  // posição inicial servo motor
     pinMode(greenLedPin, OUTPUT); // setup led verde
     pinMode(redledPin, OUTPUT);   // setup led vermelho
